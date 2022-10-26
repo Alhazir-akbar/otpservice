@@ -19,7 +19,7 @@ def generate_random_otp():
 def create_otp(data):
     try:
         otp = generate_random_otp()
-        expired_time = int(create_expired_unixtime)
+        expired_time = int(create_expired_unixtime())
         
         Otpservice(
             phone_number = data['phone_number'],
@@ -27,6 +27,6 @@ def create_otp(data):
             expired_unixtime = expired_time
         ).save()
     except Exception as e:
-        return False,""
+        return False,str(e)
     return True, otp
     
