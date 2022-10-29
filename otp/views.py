@@ -30,3 +30,38 @@ def create_otp(data):
         return False,str(e)
     return True, otp
     
+def checkExistOtp(data):
+    try:
+        checkOTP = Otpservice.objects.filter(phone_number=data['phone_number'], otp_number=data['otp_number'])
+        if len(checkOTP) > 0:
+            return True, checkOTP[0], ""
+        return False, "", "OTP Number not found"
+    except Exception as e:
+        return False, "", str(e)
+    
+def checkOTPExpired(expired_unixtime):
+    curent_time = datetime.now()
+    curent_unix_time = curent_time.timestamp()
+    if int(curent_unix_time) < int(expired_unixtime):
+        return True, "OTP valid"
+    else:
+        return False, "OTP Expired"
+    
+def validateOTP(data):
+    try:
+        is_optexist, otp, messageIsExist = checkExistOtp(data)
+        if is_optexist == True:
+            if otp.validate == True:
+                return False, "OTP already used"
+            is_expired, messageIsExpired = checkOTPExpired(otp.expired_unixtime)
+            if is_expired == True:
+                otp.validate = True
+                otp.save()
+                return True, "success"
+            else:
+                return is_expired, messageIsExpired
+        else:
+            return is_optexist, messageIsExist
+    except Exception as e:
+        return False, str(e)
+    
