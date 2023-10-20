@@ -22,7 +22,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env('SECRET_KEY')
+SECRET_KEY = 'django-insecure-+xb@he@@6te02444oa4z+0w=23^tk(j!w0mws5649p+k)q6(5y'
+
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool('DEBUG', default=False)
@@ -77,16 +79,23 @@ WSGI_APPLICATION = 'otpservice.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': env('DATABASE_BACKEND', default='django.db.backends.mysql'),
+#         'CONN_MAX_AGE': 0,
+#         'NAME': env('DATABASE_NAME'),
+#         'USER': env('DATABASE_USER'),
+#         'PASSWORD': env('DATABASE_PASSWORD', default=''),
+#         'HOST': env('DATABASE_HOST', default='localhost'),
+#         'PORT': env('DATABASE_PORT', default='3306'),
+#         'ATOMIC_REQUESTS': True,
+#     },
+# }
+import os
 DATABASES = {
     'default': {
-        'ENGINE': env('DATABASE_BACKEND', default='django.db.backends.mysql'),
-        'CONN_MAX_AGE': 0,
-        'NAME': env('DATABASE_NAME'),
-        'USER': env('DATABASE_USER'),
-        'PASSWORD': env('DATABASE_PASSWORD', default=''),
-        'HOST': env('DATABASE_HOST', default='localhost'),
-        'PORT': env('DATABASE_PORT', default='3306'),
-        'ATOMIC_REQUESTS': True,
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     },
 }
 
